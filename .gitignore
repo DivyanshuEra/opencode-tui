@@ -1,0 +1,36 @@
+node_modules/
+dist/
+out/
+build/
+*.vsix
+.vscode-test/
+.DS_Store
+*.log
+
+
+# opencode
+.opencode/
+.sisyphus/
+
+# claude
+.claude/
+.omc/
+.omx/
+.agents/
+
+# test coverage
+coverage/
+nul
+
+# screenshots / test artifacts
+*.png
+.remember/
+
+# synapse
+.synapse/
+
+// generated docs
+docs/superpowers
+memories/
+.omo
+.playwright-mcp/page-2026-05-25T17-15-54-961Z.yml

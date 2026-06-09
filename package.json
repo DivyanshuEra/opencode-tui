@@ -1,0 +1,611 @@
+{
+  "name": "opencode-tui",
+  "displayName": "OpenCode TUI",
+  "description": "The ultimate sidebar terminal console and multiplexer manager built by Divyanshu Era.",
+  "version": "1.0.0",
+  "publisher": "divyanshuera",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.106.0",
+    "node": ">=20.0.0"
+  },
+  "categories": [
+    "AI"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-tui",
+    "divyanshuera",
+    "sidebar",
+    "tui",
+    "ai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/divyanshuera/opencode-tui.git"
+  },
+  "license": "MIT",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "secondarySidebar": [
+        {
+          "id": "divyanshuEraContainer",
+          "title": "Divyanshu Era",
+          "icon": "resources/ulwcode-activity-bar.svg"
+        }
+      ]
+    },
+    "views": {
+      "divyanshuEraContainer": [
+        {
+          "id": "opencodeTui",
+          "name": "Terminal",
+          "type": "webview",
+          "icon": "resources/ulwcode-activity-bar.svg",
+          "when": "config.ulw.terminal.defaultLocation == 'sidebar'",
+          "initialOrder": 1
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "ulw.start",
+        "title": "Start OpenCode TUI",
+        "category": "OpenCode TUI"
+      },
+      {
+        "command": "ulw.focus",
+        "title": "OpenCode TUI: Focus Terminal"
+      },
+      {
+        "command": "ulw.sendToTerminal",
+        "title": "Send to Active Terminal",
+        "category": "ULW"
+      },
+      {
+        "command": "ulw.sendAtMention",
+        "title": "Send File Reference (@file)",
+        "category": "ULW"
+      },
+      {
+        "command": "ulw.sendAllOpenFiles",
+        "title": "Send All Open File References",
+        "category": "ULW"
+      },
+      {
+        "command": "ulw.sendFileToTerminal",
+        "title": "Send to Agent Terminal",
+        "category": "ULW"
+      },
+      {
+        "command": "ulw.paste",
+        "title": "Paste",
+        "category": "OpenCode TUI",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "ulw.openInNewWindow",
+        "title": "Open Tmux Session in New Window",
+        "category": "OpenCode TUI",
+        "icon": "$(empty-window)"
+      },
+      {
+        "command": "ulw.openSessionInNewWindow",
+        "title": "Open Session in New Window",
+        "category": "OpenCode TUI",
+        "icon": "$(empty-window)"
+      },
+      {
+        "command": "ulw.spawnForWorkspace",
+        "title": "Spawn Tmux Session for Workspace",
+        "category": "OpenCode TUI",
+        "icon": "$(add)"
+      },
+      {
+        "command": "ulw.selectInstance",
+        "title": "Select Agent Tmux Session",
+        "category": "OpenCode TUI",
+        "icon": "$(server-environment)"
+      },
+      {
+        "command": "ulw.switchTmuxSession",
+        "title": "Switch Tmux Session",
+        "category": "OpenCode TUI"
+      },
+      {
+        "command": "ulw.createTmuxSession",
+        "title": "OpenCode TUI: Create Tmux Session"
+      },
+      {
+        "command": "ulw.browseTmuxSessions",
+        "title": "Browse Tmux Sessions",
+        "category": "OpenCode TUI",
+        "icon": "$(server-environment)"
+      },
+      {
+        "command": "ulw.switchNativeShell",
+        "title": "Switch to Native Shell",
+        "category": "OpenCode TUI"
+      },
+      {
+        "command": "ulw.killNativeShell",
+        "title": "OpenCode TUI: Kill Native Shell"
+      },
+      {
+        "command": "ulw.openTerminalManager",
+        "title": "Open Terminal Manager",
+        "category": "OpenCode TUI",
+        "icon": "$(server)"
+      },
+      {
+        "command": "ulw.toggleDashboard",
+        "title": "Open OpenCode TUI Manager",
+        "category": "OpenCode TUI",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "ulw.toggleTmuxCommandToolbar",
+        "title": "Toggle Tmux Command Toolbar",
+        "category": "OpenCode TUI",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "ulw.openDashboardInEditor",
+        "title": "Open OpenCode TUI Manager in Editor",
+        "category": "OpenCode TUI",
+        "icon": "$(editor-layout)"
+      },
+      {
+        "command": "ulw.openTerminalInEditor",
+        "title": "Open Terminal in Editor",
+        "category": "OpenCode TUI",
+        "icon": {
+          "light": "resources/ulwcode-activity-bar.svg",
+          "dark": "resources/ulwcode-activity-bar-dark.svg"
+        }
+      },
+      {
+        "command": "ulw.openNewSessionTerminalInEditor",
+        "title": "Open New Session Terminal in Editor",
+        "category": "OpenCode TUI",
+        "icon": "$(terminal-new)"
+      },
+      {
+        "command": "ulw.restoreTerminalToSidebar",
+        "title": "Restore Terminal to Sidebar",
+        "category": "OpenCode TUI",
+        "icon": "$(layout-sidebar-left)"
+      },
+      {
+        "command": "ulw.tmuxSwitchPane",
+        "title": "Switch to Pane",
+        "category": "OpenCode TUI",
+        "icon": "$(check)"
+      },
+      {
+        "command": "ulw.tmuxSplitPaneH",
+        "title": "Split Pane Horizontal",
+        "category": "OpenCode TUI",
+        "icon": "$(split-horizontal)"
+      },
+      {
+        "command": "ulw.tmuxSplitPaneV",
+        "title": "Split Pane Vertical",
+        "category": "OpenCode TUI",
+        "icon": "$(split-vertical)"
+      },
+      {
+        "command": "ulw.tmuxSplitPaneWithCommand",
+        "title": "Split Pane with Command",
+        "category": "OpenCode TUI",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "ulw.tmuxSendTextToPane",
+        "title": "Send Text to Pane",
+        "category": "OpenCode TUI",
+        "icon": "$(file-symlink-file)"
+      },
+      {
+        "command": "ulw.tmuxResizePane",
+        "title": "Resize Pane",
+        "category": "OpenCode TUI",
+        "icon": "$(move)"
+      },
+      {
+        "command": "ulw.tmuxSwapPane",
+        "title": "Swap Panes",
+        "category": "OpenCode TUI",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "ulw.tmuxKillPane",
+        "title": "Kill Pane",
+        "category": "OpenCode TUI",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "ulw.tmuxNextWindow",
+        "title": "Next Window",
+        "category": "OpenCode TUI",
+        "icon": "$(chevron-right)"
+      },
+      {
+        "command": "ulw.tmuxPrevWindow",
+        "title": "Previous Window",
+        "category": "OpenCode TUI",
+        "icon": "$(chevron-left)"
+      },
+      {
+        "command": "ulw.tmuxCreateWindow",
+        "title": "Create Window",
+        "category": "OpenCode TUI",
+        "icon": "$(add)"
+      },
+      {
+        "command": "ulw.tmuxKillWindow",
+        "title": "Kill Window",
+        "category": "OpenCode TUI",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "ulw.tmuxSelectWindow",
+        "title": "Select Window",
+        "category": "OpenCode TUI",
+        "icon": "$(list-selection)"
+      },
+      {
+        "command": "ulw.tmuxKillSession",
+        "title": "Kill Session",
+        "category": "OpenCode TUI",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "ulw.killTmuxSession",
+        "title": "OpenCode TUI: Kill Tmux Session"
+      },
+      {
+        "command": "ulw.tmuxRefresh",
+        "title": "Refresh Terminal Manager",
+        "category": "OpenCode TUI",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "view/title": [],
+      "editor/title": [
+        {
+          "command": "ulw.openTerminalManager",
+          "group": "navigation",
+          "when": "ulw.active"
+        },
+        {
+          "command": "ulw.openTerminalInEditor",
+          "group": "navigation@1",
+          "when": "ulw.active"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "ulw.sendFileToTerminal",
+          "group": "2_workspace",
+          "when": "!explorerResourceIsFolder"
+        },
+        {
+          "command": "ulw.sendFileToTerminal",
+          "group": "2_workspace",
+          "when": "explorerResourceIsFolder"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "ulw.sendAtMention",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "ulw.sendAtMention",
+        "key": "ctrl+alt+l",
+        "mac": "cmd+alt+l",
+        "when": "editorTextFocus || terminalFocus"
+      },
+      {
+        "command": "ulw.sendAllOpenFiles",
+        "key": "ctrl+alt+a",
+        "mac": "cmd+alt+a",
+        "when": "editorTextFocus || terminalFocus"
+      },
+      {
+        "command": "ulw.browseTmuxSessions",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
+        "when": "focusedView == 'ulw'"
+      },
+      {
+        "command": "-workbench.action.quickOpen",
+        "key": "ctrl+p",
+        "when": "focusedView == 'ulw'"
+      },
+      {
+        "command": "-workbench.action.quickOpenNavigateNextInFilePicker",
+        "key": "ctrl+p",
+        "when": "inFilesPicker && inQuickOpen"
+      },
+      {
+        "command": "ulw.paste",
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "when": "focusedView == 'ulw'"
+      },
+      {
+        "command": "ulw.toggleTmuxCommandToolbar",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "focusedView == 'ulw'"
+      }
+    ],
+    "configuration": {
+      "title": "Divyanshu Era",
+      "properties": {
+        "ulw.fontSize": {
+          "type": "number",
+          "default": 14,
+          "minimum": 6,
+          "maximum": 25,
+          "description": "Terminal font size in pixels"
+        },
+        "ulw.fontFamily": {
+          "type": "string",
+          "default": "'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', 'CascadiaCode NF', Menlo, monospace",
+          "description": "Terminal font family"
+        },
+        "ulw.cursorBlink": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable cursor blinking"
+        },
+        "ulw.cursorStyle": {
+          "type": "string",
+          "default": "block",
+          "enum": [
+            "block",
+            "underline",
+            "bar"
+          ],
+          "description": "Cursor style"
+        },
+        "ulw.scrollback": {
+          "type": "number",
+          "default": 10000,
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "Maximum number of lines in scrollback buffer"
+        },
+        "ulw.autoFocusOnSend": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically focus after sending file references or text"
+        },
+        "ulw.autoStartOnOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically start the AI tool when the sidebar is opened."
+        },
+        "ulw.shellPath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom shell path to use for the terminal."
+        },
+        "ulw.shellArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Custom arguments to pass to the shell."
+        },
+        "ulw.sendKeybindingsToShell": {
+          "type": "boolean",
+          "default": true,
+          "description": "Send shortcuts directly to the sidebar terminal."
+        },
+        "ulw.showTmuxWindowControls": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show direct tmux session and window controls."
+        },
+        "ulw.autoShareContext": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically share editor context"
+        },
+        "ulw.httpTimeout": {
+          "type": "number",
+          "default": 5000,
+          "description": "HTTP API request timeout"
+        },
+        "ulw.enableHttpApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable HTTP API"
+        },
+        "ulw.logLevel": {
+          "type": "string",
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
+          "default": "info",
+          "description": "Log output level"
+        },
+        "ulw.contextDebounceMs": {
+          "type": "number",
+          "default": 500,
+          "description": "Debounce delay for context updates (ms)"
+        },
+        "ulw.maxDiagnosticLength": {
+          "type": "number",
+          "default": 500,
+          "description": "Maximum length of diagnostic messages"
+        },
+        "ulw.enableAutoSpawn": {
+          "type": "boolean",
+          "default": true,
+          "description": "Auto-spawn if not running"
+        },
+        "ulw.terminalBackend": {
+          "type": "string",
+          "default": "tmux",
+          "enum": [
+            "native",
+            "tmux",
+            "zellij"
+          ],
+          "description": "Select the terminal backend.",
+          "order": 1
+        },
+        "ulw.terminal.defaultLocation": {
+          "type": "string",
+          "default": "sidebar",
+          "enum": [
+            "editor",
+            "sidebar"
+          ],
+          "description": "Choose where opens by default.",
+          "order": 2
+        },
+        "ulw.collapseSecondaryBarOnEditorOpen": {
+          "type": "boolean",
+          "default": true,
+          "description": "Close the secondary sidebar"
+        },
+        "ulw.codeActionSeverities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "error",
+            "warning"
+          ],
+          "description": "Diagnostic severities"
+        },
+        "ulw.aiTools": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "default": [
+            {
+              "name": "opencode",
+              "label": "OpenCode",
+              "path": "",
+              "args": [],
+              "operator": "opencode"
+            }
+          ],
+          "description": "Configure AI coding tools."
+        },
+        "ulw.defaultAiTool": {
+          "type": "string",
+          "default": "opencode",
+          "description": "Name of the default AI tool"
+        },
+        "ulw.promptAiToolOnSession": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show the AI tool selector"
+        },
+        "ulw.projectList.openedOnly": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show only opened projects"
+        },
+        "ulw.pane.defaultSplitDirection": {
+          "type": "string",
+          "default": "horizontal",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ],
+          "description": "Default direction when splitting"
+        },
+        "ulw.pane.focusOnClick": {
+          "type": "boolean",
+          "default": true,
+          "description": "Focus a pane when clicking"
+        },
+        "ulw.pane.showPaneActions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show pane action buttons"
+        },
+        "ulw.pane.renderer": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "webgl",
+            "canvas",
+            "auto"
+          ],
+          "description": "Terminal renderer"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "compile:e2e": "tsc -p tsconfig.e2e.json",
+    "pretest:e2e": "npm run compile && npm run compile:e2e",
+    "test:e2e": "vscode-test"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/addon-webgl": "^0.19.0",
+    "@xterm/xterm": "^6.0.0",
+    "node-pty": "^1.2.0-beta.11",
+    "preact": "^10.29.1"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.10.13",
+    "@types/vscode": "^1.106.1",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "copy-webpack-plugin": "^14.0.0",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "jsdom": "^29.0.1",
+    "mocha": "^11.7.5",
+    "prettier": "^3.7.2",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.8",
+    "webpack": "^5.105.2",
+    "webpack-cli": "^6.0.0"
+  }
+}

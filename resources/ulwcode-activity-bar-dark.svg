@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+  <!-- Bahar ka Round Square Ghera (Outline) -->
+  <rect x="5" y="5" width="90" height="90" rx="20" fill="none" stroke="currentColor" stroke-width="6" />
+  
+  <!-- Andar ka Robot Face -->
+  <g fill="currentColor">
+    <!-- Aankhein -->
+    <circle cx="35" cy="40" r="10" />
+    <circle cx="65" cy="40" r="10" />
+    
+    <!-- Mooh (Mouth) -->
+    <rect x="25" y="62" width="50" height="8" rx="4" />
+    
+    <!-- Thoddi (Chin Line) -->
+    <rect x="40" y="76" width="20" height="4" rx="2" />
+  </g>
+</svg>

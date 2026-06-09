@@ -1,0 +1,63 @@
+# Development files
+.vscode/**
+.vscode-test/**
+.github/**
+src/**
+test/**
+out/**
+build/**
+
+# Local agent/workflow artifacts
+.agent/**
+.agents/**
+.claude/**
+.kiro/**
+.omc/**
+.omo/**
+.opencode/**
+.openchrome/**
+.playwright-mcp/**
+.sisyphus/**
+.trae/**
+.windsurf/**
+
+# Build configuration
+tsconfig.json
+webpack.config.js
+.gitignore
+.editorconfig
+.prettierrc
+.eslintrc*
+
+# Scripts
+dev-install.sh
+
+# Documentation
+*.md
+!README.md
+
+# Git
+.git/**
+.DS_Store
+*.vsix
+
+# Dependencies are automatically included by vsce
+# node_modules/** is already handled by vsce (includes 'dependencies', excludes 'devDependencies')
+
+# Source maps
+dist/**/*.map
+
+# AI agent knowledge base
+AGENTS.md
+
+# Test coverage
+coverage/
+
+# Misc
+skills-lock.json
+vitest.config.ts
+package-lock.json
+memories/
+*.log
+*.png
+!icon.png

@@ -1,0 +1,182 @@
+import * as assert from "assert";
+import * as vscode from "vscode";
+
+interface ViewContainerContribution {
+  id?: string;
+  title?: string;
+  icon?: string;
+}
+
+interface ViewContribution {
+  id?: string;
+  name?: string;
+  type?: string;
+  when?: string;
+}
+
+interface MenuContribution {
+  command?: string;
+  group?: string;
+  when?: string;
+}
+
+interface KeybindingContribution {
+  command?: string;
+  key?: string;
+  mac?: string;
+  when?: string;
+}
+
+interface ExtensionPackageJSON {
+  name?: string;
+  publisher?: string;
+  displayName?: string;
+  description?: string;
+  contributes?: {
+    viewsContainers?: Record<string, ViewContainerContribution[]>;
+    views?: Record<string, ViewContribution[]>;
+    commands?: Array<{ command?: string; title?: string; category?: string }>;
+    configuration?: { title?: string };
+    menus?: Record<string, MenuContribution[]>;
+    keybindings?: KeybindingContribution[];
+  };
+}
+
+async function activateExtension(): Promise<vscode.Extension<unknown>> {
+  const extension = vscode.extensions.getExtension(
+    "divyanshuera.opencode-tui",
+  );
+
+  assert.ok(extension, "Extension should be available in the test host");
+  await extension.activate();
+  return extension;
+}
+
+async function getPackageJSON(): Promise<ExtensionPackageJSON> {
+  const extension = await activateExtension();
+  return extension.packageJSON as ExtensionPackageJSON;
+}
+
+suite("Package contribution metadata", () => {
+  test("contributes the ULW view container without changing extension identity", async () => {
+    const packageJSON = await getPackageJSON();
+    const secondarySidebar =
+      packageJSON.contributes?.viewsContainers?.secondarySidebar ?? [];
+    const container = secondarySidebar.find(
+      ({ id }) => id === "divyanshuEraContainer",
+    );
+
+    assert.ok(container, "divyanshuEraContainer should be contributed");
+    assert.strictEqual(packageJSON.name, "opencode-tui");
+    assert.strictEqual(packageJSON.publisher, "divyanshuera");
+    assert.strictEqual(packageJSON.displayName, "OpenCode TUI");
+    assert.strictEqual(
+      packageJSON.description,
+      "The ultimate sidebar terminal console and multiplexer manager built by Divyanshu Era.",
+    );
+    assert.strictEqual(container.title, "Divyanshu Era");
+    assert.strictEqual(container.icon, "resources/ulwcode-activity-bar.svg");
+    assert.strictEqual(packageJSON.contributes?.configuration?.title, "Divyanshu Era");
+  });
+
+  test("contributes ULW command palette labels while preserving command IDs", async () => {
+    const packageJSON = await getPackageJSON();
+    const commands = packageJSON.contributes?.commands ?? [];
+    const start = commands.find(({ command }) => command === "ulw.start");
+    const focus = commands.find(({ command }) => command === "ulw.focus");
+
+    assert.deepStrictEqual(start, {
+      command: "ulw.start",
+      title: "Start OpenCode TUI",
+      category: "OpenCode TUI",
+    });
+    assert.deepStrictEqual(focus, {
+      command: "ulw.focus",
+      title: "OpenCode TUI: Focus Terminal",
+    });
+    assert.ok(
+      commands.every(({ category }) => category !== "Open Sidebar Terminal"),
+      "commands should not use old product category",
+    );
+  });
+
+  test("contributes terminal view metadata", async () => {
+    const packageJSON = await getPackageJSON();
+    const views = packageJSON.contributes?.views?.divyanshuEraContainer ?? [];
+    const terminalView = views.find(({ id }) => id === "opencodeTui");
+
+    assert.ok(terminalView, "opencodeTui webview should be contributed");
+    assert.strictEqual(terminalView.type, "webview");
+    assert.strictEqual(
+      terminalView.when,
+      "config.ulw.terminal.defaultLocation == 'sidebar'",
+    );
+  });
+
+  test("contributes editor and explorer context menus", async () => {
+    const packageJSON = await getPackageJSON();
+    const menus = packageJSON.contributes?.menus;
+    const editorContext = menus?.["editor/context"] ?? [];
+    const explorerContext = menus?.["explorer/context"] ?? [];
+
+    assert.ok(
+      editorContext.some(
+        ({ command, group }) =>
+          command === "ulw.sendAtMention" && group === "navigation",
+      ),
+      "editor/context should include sendAtMention",
+    );
+    assert.ok(
+      explorerContext.some(
+        ({ command, group, when }) =>
+          command === "ulw.sendFileToTerminal" &&
+          group === "2_workspace" &&
+          when === "!explorerResourceIsFolder",
+      ),
+      "explorer/context should include file send command",
+    );
+    assert.ok(
+      explorerContext.some(
+        ({ command, group, when }) =>
+          command === "ulw.sendFileToTerminal" &&
+          group === "2_workspace" &&
+          when === "explorerResourceIsFolder",
+      ),
+      "explorer/context should include folder send command",
+    );
+  });
+
+  test("contributes required keyboard shortcuts", async () => {
+    const packageJSON = await getPackageJSON();
+    const keybindings = packageJSON.contributes?.keybindings ?? [];
+    const expectedKeybindings = [
+      {
+        command: "ulw.sendAtMention",
+        key: "ctrl+alt+l",
+        mac: "cmd+alt+l",
+      },
+      {
+        command: "ulw.sendAllOpenFiles",
+        key: "ctrl+alt+a",
+        mac: "cmd+alt+a",
+      },
+      {
+        command: "ulw.browseTmuxSessions",
+        key: "ctrl+alt+t",
+        mac: "cmd+alt+t",
+      },
+    ];
+
+    for (const expected of expectedKeybindings) {
+      assert.ok(
+        keybindings.some(
+          ({ command, key, mac }) =>
+            command === expected.command &&
+            key === expected.key &&
+            mac === expected.mac,
+        ),
+        `${expected.command} should have ${expected.mac} keybinding`,
+      );
+    }
+  });
+});
